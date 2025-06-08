@@ -4,7 +4,7 @@
 const CONFIG = {
     // Get your API key from Google Cloud Console
     // Enable: Maps JavaScript API, Directions API, Distance Matrix API
-    GOOGLE_MAPS_API_KEY: 'AIzaSyBm2WKkJrntZiP7AZ2uFgTbMcQdCH7bhG4',
+    GOOGLE_MAPS_API_KEY: 'YOUR_API_KEY_HERE',
     
     // Your home address (starting point for all routes)
     HOME_ADDRESS: '50 rue de Malte, Paris, France',

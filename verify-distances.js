@@ -2,7 +2,7 @@
 // Run this in browser console or as a standalone script
 
 async function verifyAllDistances() {
-    const API_KEY = 'AIzaSyBm2WKkJrntZiP7AZ2uFgTbMcQdCH7bhG4';
+    const API_KEY = 'YOUR_API_KEY_HERE'; // Replace with your actual Google Maps API key
     const HOME_ADDRESS = '50 rue de Malte, Paris, France';
     
     // All nursery addresses from your HTML
