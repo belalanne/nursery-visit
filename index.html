@@ -207,7 +207,7 @@
     <div class="container">
         <div class="header">
             <h1>🏫 Planificateur de Visites de Crèches</h1>
-            <p>Planning optimisé pour 15 visites de crèches | Domicile : 50 rue de Malte, Paris</p>
+            <p>Planning optimisé pour 15 visites de crèches | Domicile : YOUR_HOME_ADDRESS_HERE</p>
         </div>
 
         <div class="content">
@@ -623,8 +623,8 @@
             console.log('initMap function called');
             console.log('Nurseries data:', nurseries);
             
-            // Center on home address - better approximation for 50 rue de Malte
-            const home = { lat: 48.8668, lng: 2.3665 }; // More accurate for 50 rue de Malte, 75011
+            // Center on home address - YOUR_HOME_COORDINATES_HERE
+            const home = { lat: 48.8668, lng: 2.3665 }; // YOUR_HOME_COORDINATES_HERE
             
             const map = new google.maps.Map(document.getElementById("map"), {
                 zoom: 13,
@@ -645,7 +645,7 @@
             const homeMarker = new google.maps.Marker({
                 position: home,
                 map: map,
-                title: "🏠 Domicile - 50 rue de Malte",
+                title: "🏠 Domicile - YOUR_HOME_ADDRESS_HERE",
                 icon: {
                     url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
                         <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50">
