@@ -7,7 +7,7 @@ const CONFIG = {
     GOOGLE_MAPS_API_KEY: 'YOUR_API_KEY_HERE',
     
     // Your home address (starting point for all routes)
-    HOME_ADDRESS: '50 rue de Malte, Paris, France',
+    HOME_ADDRESS: 'YOUR_HOME_ADDRESS_HERE',
     
     // Nursery data with addresses
     NURSERIES: [

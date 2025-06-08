@@ -3,7 +3,7 @@
 
 async function verifyAllDistances() {
     const API_KEY = 'YOUR_API_KEY_HERE'; // Replace with your actual Google Maps API key
-    const HOME_ADDRESS = '50 rue de Malte, Paris, France';
+    const HOME_ADDRESS = 'YOUR_HOME_ADDRESS_HERE'; // Replace with your actual home address
     
     // All nursery addresses from your HTML
     const nurseries = [
