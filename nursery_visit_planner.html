@@ -57,11 +57,22 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.08);
         }
         .day-header {
-            background: linear-gradient(45deg, #e74c3c, #f39c12);
             color: white;
             padding: 20px;
             font-size: 1.3em;
             font-weight: 500;
+        }
+        .day-header.mardi {
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+        }
+        .day-header.mercredi {
+            background: linear-gradient(45deg, #27ae60, #229954);
+        }
+        .day-header.jeudi {
+            background: linear-gradient(45deg, #f39c12, #e67e22);
+        }
+        .day-header.vendredi {
+            background: linear-gradient(45deg, #9b59b6, #8e44ad);
         }
         .visit-session {
             padding: 20px;
@@ -99,13 +110,25 @@
             font-size: 0.9em;
         }
         .time-badge {
-            background: #3498db;
             color: white;
             padding: 4px 10px;
             border-radius: 15px;
             font-size: 0.8em;
             display: inline-block;
             margin-right: 10px;
+            font-weight: 600;
+        }
+        .time-badge.mardi {
+            background: #e74c3c;
+        }
+        .time-badge.mercredi {
+            background: #27ae60;
+        }
+        .time-badge.jeudi {
+            background: #f39c12;
+        }
+        .time-badge.vendredi {
+            background: #9b59b6;
         }
         .distance-badge {
             background: #e74c3c;
@@ -205,12 +228,12 @@
 
             <!-- MARDI -->
             <div class="day-card">
-                <div class="day-header">📅 Mardi</div>
+                <div class="day-header mardi">📅 Mardi</div>
                 <div class="visit-session">
                     <div class="session-title">🌅 Session Matinale (10h00 - 12h00)</div>
                     <div class="nursery-item">
                         <div class="nursery-name">
-                            <span class="time-badge">10:00-10:30</span>
+                            <span class="time-badge mardi">10:00-10:30</span>
                             Apate-Mowgli
                         </div>
                         <div class="nursery-address">📍 <a href="https://www.google.com/maps/search/?api=1&query=10%20rue%20Dieu%2075010%20Paris" target="_blank" class="address-link">10, rue Dieu, 75010</a></div>
@@ -222,7 +245,7 @@
                     </div>
                     <div class="nursery-item">
                         <div class="nursery-name">
-                            <span class="time-badge">10:45-11:15</span>
+                            <span class="time-badge mardi">10:45-11:15</span>
                             Crèche franco-chinoise
                         </div>
                         <div class="nursery-address">📍 <a href="https://www.google.com/maps/search/?api=1&query=5%20rue%20Yves%20Toudic%2075010%20Paris" target="_blank" class="address-link">5, rue Yves Toudic, 75010</a></div>
@@ -237,7 +260,7 @@
                     <div class="session-title">🌞 Session Après-midi (14h00 - 16h00)</div>
                     <div class="nursery-item">
                         <div class="nursery-name">
-                            <span class="time-badge">14:00-14:30</span>
+                            <span class="time-badge mardi">14:00-14:30</span>
                             Crèche Gabriel de Mun-Croix Rouge
                         </div>
                         <div class="nursery-address">📍 <a href="https://www.google.com/maps/search/?api=1&query=4%20rue%20Lucien%20Sampaix%2075010%20Paris" target="_blank" class="address-link">4, rue Lucien Sampaix, 75010</a></div>
@@ -249,7 +272,7 @@
                     </div>
                     <div class="nursery-item">
                         <div class="nursery-name">
-                            <span class="time-badge">14:45-15:15</span>
+                            <span class="time-badge mardi">14:45-15:15</span>
                             La Maison Kangourou Vinaigriers
                         </div>
                         <div class="nursery-address">📍 <a href="https://www.google.com/maps/search/?api=1&query=34A%20rue%20des%20Vinaigriers%2075010%20Paris" target="_blank" class="address-link">34A, rue des Vinaigriers, 75010</a></div>
@@ -264,12 +287,12 @@
 
             <!-- MERCREDI -->
             <div class="day-card">
-                <div class="day-header">📅 Mercredi</div>
+                <div class="day-header mercredi">📅 Mercredi</div>
                 <div class="visit-session">
                     <div class="session-title">🌅 Session Matinale (10h00 - 12h00)</div>
                     <div class="nursery-item">
                         <div class="nursery-name">
-                            <span class="time-badge">10:00-10:30</span>
+                            <span class="time-badge mercredi">10:00-10:30</span>
                             Les Kiklos
                         </div>
                         <div class="nursery-address">📍 <a href="https://www.google.com/maps/search/?api=1&query=1%20avenue%20Claude%20Vellefaux%2075010%20Paris" target="_blank" class="address-link">1, avenue Claude Vellefaux, 75010</a></div>
@@ -281,7 +304,7 @@
                     </div>
                     <div class="nursery-item">
                         <div class="nursery-name">
-                            <span class="time-badge">10:45-11:15</span>
+                            <span class="time-badge mercredi">10:45-11:15</span>
                             La Maison Kangourou Temple
                         </div>
                         <div class="nursery-address">📍 <a href="https://www.google.com/maps/search/?api=1&query=129%20rue%20du%20Faubourg%20du%20Temple%2075010%20Paris" target="_blank" class="address-link">129, rue du Faubourg du Temple, 75010</a></div>
@@ -296,7 +319,7 @@
                     <div class="session-title">🌞 Session Après-midi (14h00 - 16h00)</div>
                     <div class="nursery-item">
                         <div class="nursery-name">
-                            <span class="time-badge">14:00-14:30</span>
+                            <span class="time-badge mercredi">14:00-14:30</span>
                             Petit Concept
                         </div>
                         <div class="nursery-address">📍 <a href="https://www.google.com/maps/search/?api=1&query=18%20rue%20de%20l%27Orillon%2075011%20Paris" target="_blank" class="address-link">18, rue de l'Orillon, 75011</a></div>
@@ -308,7 +331,7 @@
                     </div>
                     <div class="nursery-item">
                         <div class="nursery-name">
-                            <span class="time-badge">14:45-15:15</span>
+                            <span class="time-badge mercredi">14:45-15:15</span>
                             Crèche Ganone Yad
                         </div>
                         <div class="nursery-address">📍 <a href="https://www.google.com/maps/search/?api=1&query=145%20rue%20Saint-Maur%2075011%20Paris" target="_blank" class="address-link">145, rue Saint-Maur, 75011</a></div>
@@ -323,12 +346,12 @@
 
             <!-- JEUDI -->
             <div class="day-card">
-                <div class="day-header">📅 Jeudi</div>
+                <div class="day-header jeudi">📅 Jeudi</div>
                 <div class="visit-session">
                     <div class="session-title">🌅 Session Matinale (10h00 - 12h00)</div>
                     <div class="nursery-item">
                         <div class="nursery-name">
-                            <span class="time-badge">10:00-10:30</span>
+                            <span class="time-badge jeudi">10:00-10:30</span>
                             Charlot
                         </div>
                         <div class="nursery-address">📍 <a href="https://www.google.com/maps/search/?api=1&query=5%20rue%20Charlot%2075003%20Paris" target="_blank" class="address-link">5 rue Charlot, 75003</a></div>
@@ -339,7 +362,7 @@
                     </div>
                     <div class="nursery-item">
                         <div class="nursery-name">
-                            <span class="time-badge">10:45-11:15</span>
+                            <span class="time-badge jeudi">10:45-11:15</span>
                             Haudriettes
                         </div>
                         <div class="nursery-address">📍 <a href="https://www.google.com/maps/search/?api=1&query=3%20rue%20des%20Haudriettes%2075003%20Paris" target="_blank" class="address-link">3 rue des Haudriettes, 75003</a></div>
@@ -353,7 +376,7 @@
                     <div class="session-title">🌞 Session Après-midi (14h00 - 16h00)</div>
                     <div class="nursery-item">
                         <div class="nursery-name">
-                            <span class="time-badge">14:00-14:30</span>
+                            <span class="time-badge jeudi">14:00-14:30</span>
                             Montmorency
                         </div>
                         <div class="nursery-address">📍 <a href="https://www.google.com/maps/search/?api=1&query=8%20rue%20de%20Montmorency%2075003%20Paris" target="_blank" class="address-link">8 rue de Montmorency, 75003</a></div>
@@ -365,7 +388,7 @@
                     </div>
                     <div class="nursery-item">
                         <div class="nursery-name">
-                            <span class="time-badge">14:45-15:15</span>
+                            <span class="time-badge jeudi">14:45-15:15</span>
                             Martin
                         </div>
                         <div class="nursery-address">📍 <a href="https://www.google.com/maps/search/?api=1&query=220%20rue%20Saint-Martin%2075003%20Paris" target="_blank" class="address-link">220 rue Saint-Martin, 75003</a></div>
@@ -380,7 +403,7 @@
                     <div class="session-title">🌆 Session Tardive (16h00 - 16h30)</div>
                     <div class="nursery-item">
                         <div class="nursery-name">
-                            <span class="time-badge">16:00-16:30</span>
+                            <span class="time-badge jeudi">16:00-16:30</span>
                             du petit Touhars
                             <div class="note-warning">⚠️ Rappeler jeudi (c'est parfait !)</div>
                         </div>
@@ -396,12 +419,12 @@
 
             <!-- VENDREDI -->
             <div class="day-card">
-                <div class="day-header">📅 Vendredi</div>
+                <div class="day-header vendredi">📅 Vendredi</div>
                 <div class="visit-session">
                     <div class="session-title">🌅 Session Matinale (10h00 - 12h00)</div>
                     <div class="nursery-item">
                         <div class="nursery-name">
-                            <span class="time-badge">10:00-10:30</span>
+                            <span class="time-badge vendredi">10:00-10:30</span>
                             Association Mosaïque
                         </div>
                         <div class="nursery-address">📍 <a href="https://www.google.com/maps/search/?api=1&query=21%20rue%20de%20la%20Folie-M%C3%A9ricourt%2075011%20Paris" target="_blank" class="address-link">21, rue de la Folie-Méricourt, 75011</a></div>
@@ -413,7 +436,7 @@
                     </div>
                     <div class="nursery-item">
                         <div class="nursery-name">
-                            <span class="time-badge">10:45-11:15</span>
+                            <span class="time-badge vendredi">10:45-11:15</span>
                             Les Minimes
                         </div>
                         <div class="nursery-address">📍 <a href="https://www.google.com/maps/search/?api=1&query=35%20bis%20rue%20des%20Tournelles%2075003%20Paris" target="_blank" class="address-link">35 bis rue des Tournelles, 75003</a></div>
@@ -427,14 +450,6 @@
             </div>
 
                 </div>
-    </div>
-
-    <!-- Google Maps with Nursery Locations -->
-    <div class="maps-container">
-        <div class="maps-header">
-            <h3>🗺️ Carte des Crèches</h3>
-        </div>
-        <div id="map"></div>
     </div>
 
     <div style="background: #2c3e50; color: white; padding: 20px; border-radius: 12px; margin: 30px;">
@@ -631,13 +646,15 @@
                 position: home,
                 map: map,
                 title: "🏠 Domicile - 50 rue de Malte",
-                label: {
-                    text: '🏠',
-                    color: 'white',
-                    fontSize: '16px'
-                },
                 icon: {
-                    url: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png'
+                    url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
+                        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50">
+                            <circle cx="25" cy="25" r="23" fill="#2c3e50" stroke="white" stroke-width="4"/>
+                            <text x="25" y="32" text-anchor="middle" fill="white" font-size="20" font-family="Arial">🏠</text>
+                        </svg>
+                    `),
+                    scaledSize: new google.maps.Size(50, 50),
+                    anchor: new google.maps.Point(25, 25)
                 }
             });
             console.log('Home marker added');
@@ -653,17 +670,20 @@
                     if (status === 'OK') {
                         const position = results[0].geometry.location;
                         
+                        const markerColor = dayColors[nursery.day];
                         const marker = new google.maps.Marker({
                             position: position,
                             map: map,
                             title: `${nursery.name} - ${nursery.day} ${nursery.time}`,
-                            label: {
-                                text: String(index + 1),
-                                color: 'white',
-                                fontWeight: 'bold'
-                            },
                             icon: {
-                                url: `https://maps.google.com/mapfiles/ms/icons/${nursery.day === 'Mardi' ? 'red' : nursery.day === 'Mercredi' ? 'green' : nursery.day === 'Jeudi' ? 'orange' : 'purple'}-dot.png`
+                                url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">
+                                        <circle cx="20" cy="20" r="18" fill="${markerColor}" stroke="white" stroke-width="3"/>
+                                        <text x="20" y="26" text-anchor="middle" fill="white" font-size="14" font-weight="bold" font-family="Arial">${index + 1}</text>
+                                    </svg>
+                                `),
+                                scaledSize: new google.maps.Size(40, 40),
+                                anchor: new google.maps.Point(20, 20)
                             }
                         });
 
@@ -710,17 +730,20 @@
                             fallbackLng += 0.005;
                         }
                         
+                        const markerColor = dayColors[nursery.day];
                         const fallbackMarker = new google.maps.Marker({
                             position: { lat: fallbackLat, lng: fallbackLng },
                             map: map,
                             title: `${nursery.name} - ${nursery.day} ${nursery.time} (Position approximative)`,
-                            label: {
-                                text: String(index + 1),
-                                color: 'white',
-                                fontWeight: 'bold'
-                            },
                             icon: {
-                                url: `https://maps.google.com/mapfiles/ms/icons/${nursery.day === 'Mardi' ? 'red' : nursery.day === 'Mercredi' ? 'green' : nursery.day === 'Jeudi' ? 'orange' : 'purple'}-dot.png`
+                                url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">
+                                        <circle cx="20" cy="20" r="18" fill="${markerColor}" stroke="white" stroke-width="3" opacity="0.8"/>
+                                        <text x="20" y="26" text-anchor="middle" fill="white" font-size="14" font-weight="bold" font-family="Arial">${index + 1}</text>
+                                    </svg>
+                                `),
+                                scaledSize: new google.maps.Size(40, 40),
+                                anchor: new google.maps.Point(20, 20)
                             }
                         });
                         
