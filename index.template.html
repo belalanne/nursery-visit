@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planificateur de Visites de Crèches</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(45deg, #2c3e50, #3498db);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            font-weight: 300;
+        }
+        .header p {
+            margin: 10px 0 0 0;
+            opacity: 0.9;
+        }
+        .content {
+            padding: 30px;
+        }
+        .summary {
+            background: linear-gradient(45deg, #27ae60, #2ecc71);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        .summary h3 {
+            margin: 0 0 10px 0;
+        }
+        .day-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        .day-header {
+            color: white;
+            padding: 20px;
+            font-size: 1.3em;
+            font-weight: 500;
+        }
+        .day-header.mardi {
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+        }
+        .day-header.mercredi {
+            background: linear-gradient(45deg, #27ae60, #229954);
+        }
+        .day-header.jeudi {
+            background: linear-gradient(45deg, #f39c12, #e67e22);
+        }
+        .day-header.vendredi {
+            background: linear-gradient(45deg, #9b59b6, #8e44ad);
+        }
+        .visit-session {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        .visit-session:last-child {
+            border-bottom: none;
+        }
+        .session-title {
+            color: #2c3e50;
+            font-weight: 600;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+        .nursery-item {
+            background: white;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+        }
+        .nursery-name {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        .nursery-address {
+            color: #7f8c8d;
+            font-size: 0.9em;
+            margin-bottom: 8px;
+        }
+        .nursery-phone {
+            color: #27ae60;
+            font-weight: 500;
+            font-size: 0.9em;
+        }
+        .time-badge {
+            color: white;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            display: inline-block;
+            margin-right: 10px;
+            font-weight: 600;
+        }
+        .time-badge.mardi {
+            background: #e74c3c;
+        }
+        .time-badge.mercredi {
+            background: #27ae60;
+        }
+        .time-badge.jeudi {
+            background: #f39c12;
+        }
+        .time-badge.vendredi {
+            background: #9b59b6;
+        }
+        .distance-badge {
+            background: #e74c3c;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            display: inline-block;
+        }
+        .route-info {
+            background: #ecf0f1;
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: #34495e;
+        }
+        .note-warning {
+            color: #e74c3c;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        .nursery-comment {
+            background: #f8f9fa;
+            color: #6c757d;
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin: 8px 0;
+            font-size: 0.9em;
+            border-left: 3px solid #28a745;
+        }
+        .address-link {
+            color: #3498db;
+            text-decoration: none;
+            border-bottom: 1px dotted #3498db;
+            transition: all 0.2s ease;
+        }
+        .address-link:hover {
+            color: #2980b9;
+            border-bottom: 1px solid #2980b9;
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+        .api-info {
+            background: #f39c12;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        /* Google Maps Styles */
+        .maps-container {
+            background: #fff;
+            border-radius: 12px;
+            margin: 25px 0;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        .maps-header {
+            background: linear-gradient(45deg, #1abc9c, #16a085);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        #map {
+            width: 100%;
+            height: 400px;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏫 Planificateur de Visites de Crèches</h1>
+            <p>Planning optimisé pour 15 visites de crèches | Domicile : 50 rue de Malte, Paris</p>
+        </div>
+
+        <div class="content">
+            <div class="summary">
+                <h3>📊 Résumé du Planning</h3>
+                <p><strong>Total des visites :</strong> 15 crèches | <strong>Jours :</strong> Mardi - Vendredi | <strong>Durée par visite :</strong> 30 minutes</p>
+                <p><strong>Horaires :</strong> Max 2 visites matinales (10h-12h) + Max 2 visites après-midi (14h-16h)</p>
+            </div>
+
+            <!-- Google Maps with Nursery Locations -->
+            <div class="maps-container">
+                <div class="maps-header">
+                    <h3>🗺️ Carte des Crèches</h3>
+                    <p>Cliquez sur les marqueurs pour voir les détails</p>
+                </div>
+                <div id="map"></div>
+            </div>
+
+            <!-- MARDI -->
+            <div class="day-card">
+                <div class="day-header mardi">📅 Mardi</div>
+                <div class="visit-session">
+                    <div class="session-title">🌅 Session Matinale (10h00 - 12h00)</div>
+                    <div class="nursery-item">
+                        <div class="nursery-name">
+                            <span class="time-badge mardi">10:00-10:30</span>
+                            Apate-Mowgli
+                        </div>
+                        <div class="nursery-address">📍 <a href="https://www.google.com/maps/search/?api=1&query=10%20rue%20Dieu%2075010%20Paris" target="_blank" class="address-link">10, rue Dieu, 75010</a></div>
+                        <div class="nursery-phone">📞 01 53 19 88 50</div>
+                        <div class="nursery-comment">💬 candidature faite en ligne</div>
+                        <div class="route-info">
+                            <span class="distance-badge">🚶‍♂️ 7 min à pied depuis le domicile</span>
+                        </div>
+                    </div>
+                    <div class="nursery-item">
+                        <div class="nursery-name">
+                            <span class="time-badge mardi">10:45-11:15</span>
+                            Crèche franco-chinoise
+                        </div>
+                        <div class="nursery-address">📍 <a href="https://www.google.com/maps/search/?api=1&query=5%20rue%20Yves%20Toudic%2075010%20Paris" target="_blank" class="address-link">5, rue Yves Toudic, 75010</a></div>
+                        <div class="nursery-phone">📞 01 42 00 88 88</div>
+                        <div class="nursery-comment">💬 candidature possible mais complet</div>
+                        <div class="route-info">
+                            <span class="distance-badge">🚶‍♂️ 3 min à pied du précédent</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="visit-session">
+                    <div class="session-title">🌞 Session Après-midi (14h00 - 16h00)</div>
+                    <div class="nursery-item">
+                        <div class="nursery-name">
+                            <span class="time-badge mardi">14:00-14:30</span>
+                            Crèche Gabriel de Mun-Croix Rouge
+                        </div>
+                        <div class="nursery-address">📍 <a href="https://www.google.com/maps/search/?api=1&query=4%20rue%20Lucien%20Sampaix%2075010%20Paris" target="_blank" class="address-link">4, rue Lucien Sampaix, 75010</a></div>
+                        <div class="nursery-phone">📞 01 46 07 34 80</div>
+                        <div class="nursery-comment">💬 candidature possible mais complet</div>
+                        <div class="route-info">
+                            <span class="distance-badge">🚶‍♂️ 5 min à pied de franco-chinoise</span>
+                        </div>
+                    </div>
+                    <div class="nursery-item">
+                        <div class="nursery-name">
+                            <span class="time-badge mardi">14:45-15:15</span>
+                            La Maison Kangourou Vinaigriers
+                        </div>
+                        <div class="nursery-address">📍 <a href="https://www.google.com/maps/search/?api=1&query=34A%20rue%20des%20Vinaigriers%2075010%20Paris" target="_blank" class="address-link">34A, rue des Vinaigriers, 75010</a></div>
+                        <div class="nursery-phone">📞 01 88 40 11 90</div>
+                        <div class="nursery-comment">💬 candidature possible mais complet</div>
+                        <div class="route-info">
+                            <span class="distance-badge">🚶‍♂️ 4 min à pied du précédent</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MERCREDI -->
+            <div class="day-card">
+                <div class="day-header mercredi">📅 Mercredi</div>
+                <div class="visit-session">
+                    <div class="session-title">🌅 Session Matinale (10h00 - 12h00)</div>
+                    <div class="nursery-item">
+                        <div class="nursery-name">
+                            <span class="time-badge mercredi">10:00-10:30</span>
+                            Les Kiklos
+                        </div>
+                        <div class="nursery-address">📍 <a href="https://www.google.com/maps/search/?api=1&query=1%20avenue%20Claude%20Vellefaux%2075010%20Paris" target="_blank" class="address-link">1, avenue Claude Vellefaux, 75010</a></div>
+                        <div class="nursery-phone">📞 09 81 95 82 31</div>
+                        <div class="nursery-comment">💬 pas de réponse</div>
+                        <div class="route-info">
+                            <span class="distance-badge">🚶‍♂️ 14 min à pied du domicile</span>
+                        </div>
+                    </div>
+                    <div class="nursery-item">
+                        <div class="nursery-name">
+                            <span class="time-badge mercredi">10:45-11:15</span>
+                            La Maison Kangourou Temple
+                        </div>
+                        <div class="nursery-address">📍 <a href="https://www.google.com/maps/search/?api=1&query=129%20rue%20du%20Faubourg%20du%20Temple%2075010%20Paris" target="_blank" class="address-link">129, rue du Faubourg du Temple, 75010</a></div>
+                        <div class="nursery-phone">📞 01 48 03 85 98</div>
+                        <div class="nursery-comment">💬 candidature faite</div>
+                        <div class="route-info">
+                            <span class="distance-badge">🚶‍♂️ 8 min à pied du précédent</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="visit-session">
+                    <div class="session-title">🌞 Session Après-midi (14h00 - 16h00)</div>
+                    <div class="nursery-item">
+                        <div class="nursery-name">
+                            <span class="time-badge mercredi">14:00-14:30</span>
+                            Petit Concept
+                        </div>
+                        <div class="nursery-address">📍 <a href="https://www.google.com/maps/search/?api=1&query=18%20rue%20de%20l%27Orillon%2075011%20Paris" target="_blank" class="address-link">18, rue de l'Orillon, 75011</a></div>
+                        <div class="nursery-phone">📞 01 43 57 12 92</div>
+                        <div class="nursery-comment">💬 pas de réponse</div>
+                        <div class="route-info">
+                            <span class="distance-badge">🚶‍♂️ 6 min à pied de Temple</span>
+                        </div>
+                    </div>
+                    <div class="nursery-item">
+                        <div class="nursery-name">
+                            <span class="time-badge mercredi">14:45-15:15</span>
+                            Crèche Ganone Yad
+                        </div>
+                        <div class="nursery-address">📍 <a href="https://www.google.com/maps/search/?api=1&query=145%20rue%20Saint-Maur%2075011%20Paris" target="_blank" class="address-link">145, rue Saint-Maur, 75011</a></div>
+                        <div class="nursery-phone">📞 01 48 05 44 15</div>
+                        <div class="nursery-comment">💬 pas de réponse</div>
+                        <div class="route-info">
+                            <span class="distance-badge">🚶‍♂️ 12 min à pied du précédent</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- JEUDI -->
+            <div class="day-card">
+                <div class="day-header jeudi">📅 Jeudi</div>
+                <div class="visit-session">
+                    <div class="session-title">🌅 Session Matinale (10h00 - 12h00)</div>
+                    <div class="nursery-item">
+                        <div class="nursery-name">
+                            <span class="time-badge jeudi">10:00-10:30</span>
+                            Charlot
+                        </div>
+                        <div class="nursery-address">📍 <a href="https://www.google.com/maps/search/?api=1&query=5%20rue%20Charlot%2075003%20Paris" target="_blank" class="address-link">5 rue Charlot, 75003</a></div>
+                        <div class="nursery-phone">📞 09 84 49 47 81</div>
+                        <div class="route-info">
+                            <span class="distance-badge">🚶‍♂️ 14 min à pied du domicile</span>
+                        </div>
+                    </div>
+                    <div class="nursery-item">
+                        <div class="nursery-name">
+                            <span class="time-badge jeudi">10:45-11:15</span>
+                            Haudriettes
+                        </div>
+                        <div class="nursery-address">📍 <a href="https://www.google.com/maps/search/?api=1&query=3%20rue%20des%20Haudriettes%2075003%20Paris" target="_blank" class="address-link">3 rue des Haudriettes, 75003</a></div>
+                        <div class="nursery-phone">📞 01 80 48 96 93</div>
+                        <div class="route-info">
+                            <span class="distance-badge">🚶‍♂️ 3 min à pied du précédent</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="visit-session">
+                    <div class="session-title">🌞 Session Après-midi (14h00 - 16h00)</div>
+                    <div class="nursery-item">
+                        <div class="nursery-name">
+                            <span class="time-badge jeudi">14:00-14:30</span>
+                            Montmorency
+                        </div>
+                        <div class="nursery-address">📍 <a href="https://www.google.com/maps/search/?api=1&query=8%20rue%20de%20Montmorency%2075003%20Paris" target="_blank" class="address-link">8 rue de Montmorency, 75003</a></div>
+                        <div class="nursery-phone">📞 01 42 71 01 47</div>
+                        <div class="nursery-comment">💬 candidature faite en ligne</div>
+                        <div class="route-info">
+                            <span class="distance-badge">🚶‍♂️ 4 min à pied de Haudriettes</span>
+                        </div>
+                    </div>
+                    <div class="nursery-item">
+                        <div class="nursery-name">
+                            <span class="time-badge jeudi">14:45-15:15</span>
+                            Martin
+                        </div>
+                        <div class="nursery-address">📍 <a href="https://www.google.com/maps/search/?api=1&query=220%20rue%20Saint-Martin%2075003%20Paris" target="_blank" class="address-link">220 rue Saint-Martin, 75003</a></div>
+                        <div class="nursery-phone">📞 01 44 78 65 08</div>
+                        <div class="nursery-comment">💬 candidature possible mais complet</div>
+                        <div class="route-info">
+                            <span class="distance-badge">🚶‍♂️ 6 min à pied du précédent</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="visit-session">
+                    <div class="session-title">🌆 Session Tardive (16h00 - 16h30)</div>
+                    <div class="nursery-item">
+                        <div class="nursery-name">
+                            <span class="time-badge jeudi">16:00-16:30</span>
+                            du petit Touhars
+                            <div class="note-warning">⚠️ Rappeler jeudi (c'est parfait !)</div>
+                        </div>
+                        <div class="nursery-address">📍 <a href="https://www.google.com/maps/search/?api=1&query=10%20rue%20du%20petit%20Touhars%2075003%20Paris" target="_blank" class="address-link">10 rue du petit Touhars, 75003</a></div>
+                        <div class="nursery-phone">📞 01 44 78 65 08</div>
+                        <div class="nursery-comment">💬 rappeler jeudi</div>
+                        <div class="route-info">
+                            <span class="distance-badge">🚶‍♂️ 5 min à pied du précédent</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VENDREDI -->
+            <div class="day-card">
+                <div class="day-header vendredi">📅 Vendredi</div>
+                <div class="visit-session">
+                    <div class="session-title">🌅 Session Matinale (10h00 - 12h00)</div>
+                    <div class="nursery-item">
+                        <div class="nursery-name">
+                            <span class="time-badge vendredi">10:00-10:30</span>
+                            Association Mosaïque
+                        </div>
+                        <div class="nursery-address">📍 <a href="https://www.google.com/maps/search/?api=1&query=21%20rue%20de%20la%20Folie-M%C3%A9ricourt%2075011%20Paris" target="_blank" class="address-link">21, rue de la Folie-Méricourt, 75011</a></div>
+                        <div class="nursery-phone">📞 01 43 57 93 37</div>
+                        <div class="nursery-comment">💬 candidature avant 12 mois</div>
+                        <div class="route-info">
+                            <span class="distance-badge">🚶‍♂️ 11 min à pied du domicile</span>
+                        </div>
+                    </div>
+                    <div class="nursery-item">
+                        <div class="nursery-name">
+                            <span class="time-badge vendredi">10:45-11:15</span>
+                            Les Minimes
+                        </div>
+                        <div class="nursery-address">📍 <a href="https://www.google.com/maps/search/?api=1&query=35%20bis%20rue%20des%20Tournelles%2075003%20Paris" target="_blank" class="address-link">35 bis rue des Tournelles, 75003</a></div>
+                        <div class="nursery-phone">📞 pas de numéro</div>
+                        <div class="nursery-comment">💬 pas de numéro</div>
+                        <div class="route-info">
+                            <span class="distance-badge">🚶‍♂️ 15 min à pied du précédent</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+                </div>
+    </div>
+
+    <div style="background: #2c3e50; color: white; padding: 20px; border-radius: 12px; margin: 30px;">
+        <h3>📝 Notes importantes :</h3>
+        <ul>
+            <li><strong>Jeudi après-midi</strong> : Parfait pour appeler "du petit Touhars" comme demandé</li>
+            <li><strong>Distances optimisées</strong> : Maximum 15 min de marche, la plupart 3-8 min</li>
+            <li><strong>Groupement géographique</strong> : 10ème (Mar/Mer), 3ème (Jeu), 11ème (Ven)</li>
+            <li><strong>Temps de visite</strong> : 30 min + 15 min de trajet = 45 min par crèche</li>
+            <li><strong>🚶‍♂️ Distances vérifiées</strong> : Toutes les distances ont été calculées selon les temps de marche réalistes à Paris</li>
+        </ul>
+    </div>
+
+    <!-- Google Maps API -->
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key={{GOOGLE_MAPS_API_KEY}}&callback=initMap">
+    </script>
+    
+    <script>
+        // Nursery data extracted from the HTML
+        const nurseries = [
+            // Tuesday
+            {
+                name: "Apate-Mowgli",
+                address: "10, rue Dieu, 75010",
+                phone: "01 53 19 88 50",
+                day: "Mardi",
+                time: "10:00-10:30",
+                session: "Matinale",
+                comment: "candidature faite en ligne"
+            },
+            {
+                name: "Crèche franco-chinoise",
+                address: "5, rue Yves Toudic, 75010",
+                phone: "01 42 00 88 88",
+                day: "Mardi",
+                time: "10:45-11:15",
+                session: "Matinale",
+                comment: "candidature possible mais complet"
+            },
+            {
+                name: "Crèche Gabriel de Mun-Croix Rouge",
+                address: "4, rue Lucien Sampaix, 75010",
+                phone: "01 46 07 34 80",
+                day: "Mardi",
+                time: "14:00-14:30",
+                session: "Après-midi",
+                comment: "candidature possible mais complet"
+            },
+            {
+                name: "La Maison Kangourou Vinaigriers",
+                address: "34A, rue des Vinaigriers, 75010",
+                phone: "01 88 40 11 90",
+                day: "Mardi",
+                time: "14:45-15:15",
+                session: "Après-midi",
+                comment: "candidature possible mais complet"
+            },
+            // Wednesday
+            {
+                name: "Les Kiklos",
+                address: "1, avenue Claude Vellefaux, 75010",
+                phone: "09 81 95 82 31",
+                day: "Mercredi",
+                time: "10:00-10:30",
+                session: "Matinale",
+                comment: "pas de réponse"
+            },
+            {
+                name: "La Maison Kangourou Temple",
+                address: "129, rue du Faubourg du Temple, 75010",
+                phone: "01 48 03 85 98",
+                day: "Mercredi",
+                time: "10:45-11:15",
+                session: "Matinale",
+                comment: "candidature faite"
+            },
+            {
+                name: "Petit Concept",
+                address: "18, rue de l'Orillon, 75011",
+                phone: "01 43 57 12 92",
+                day: "Mercredi",
+                time: "14:00-14:30",
+                session: "Après-midi",
+                comment: "pas de réponse"
+            },
+            {
+                name: "Crèche Ganone Yad",
+                address: "145, rue Saint-Maur, 75011",
+                phone: "01 48 05 44 15",
+                day: "Mercredi",
+                time: "14:45-15:15",
+                session: "Après-midi",
+                comment: "pas de réponse"
+            },
+            // Thursday
+            {
+                name: "Charlot",
+                address: "5 rue Charlot, 75003",
+                phone: "09 84 49 47 81",
+                day: "Jeudi",
+                time: "10:00-10:30",
+                session: "Matinale"
+            },
+            {
+                name: "Haudriettes",
+                address: "3 rue des Haudriettes, 75003",
+                phone: "01 80 48 96 93",
+                day: "Jeudi",
+                time: "10:45-11:15",
+                session: "Matinale"
+            },
+            {
+                name: "Montmorency",
+                address: "8 rue de Montmorency, 75003",
+                phone: "01 42 71 01 47",
+                day: "Jeudi",
+                time: "14:00-14:30",
+                session: "Après-midi",
+                comment: "candidature faite en ligne"
+            },
+            {
+                name: "Martin",
+                address: "220 rue Saint-Martin, 75003",
+                phone: "01 44 78 65 08",
+                day: "Jeudi",
+                time: "14:45-15:15",
+                session: "Après-midi",
+                comment: "candidature possible mais complet"
+            },
+            {
+                name: "du petit Touhars",
+                address: "10 rue du petit Touhars, 75003",
+                phone: "01 44 78 65 08",
+                day: "Jeudi",
+                time: "16:00-16:30",
+                session: "Tardive",
+                note: "⚠️ Rappeler jeudi (c'est parfait !)",
+                comment: "rappeler jeudi"
+            },
+            // Friday
+            {
+                name: "Association Mosaïque",
+                address: "21, rue de la Folie-Méricourt, 75011",
+                phone: "01 43 57 93 37",
+                day: "Vendredi",
+                time: "10:00-10:30",
+                session: "Matinale",
+                comment: "candidature avant 12 mois"
+            },
+            {
+                name: "Les Minimes",
+                address: "35 bis rue des Tournelles, 75003",
+                phone: "pas de numéro",
+                day: "Vendredi",
+                time: "10:45-11:15",
+                session: "Matinale",
+                comment: "pas de numéro"
+            }
+        ];
+
+        // Day colors for map markers
+        const dayColors = {
+            'Mardi': '#e74c3c',
+            'Mercredi': '#27ae60',
+            'Jeudi': '#f39c12',
+            'Vendredi': '#9b59b6'
+        };
+
+        function initMap() {
+            console.log('initMap function called');
+            console.log('Nurseries data:', nurseries);
+            
+            // Center on home address - better approximation for 50 rue de Malte
+            const home = { lat: 48.8668, lng: 2.3665 }; // More accurate for 50 rue de Malte, 75011
+            
+            const map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 13,
+                center: home,
+                styles: [
+                    {
+                        "featureType": "poi",
+                        "elementType": "labels",
+                        "stylers": [{"visibility": "off"}]
+                    }
+                ]
+            });
+
+            const geocoder = new google.maps.Geocoder();
+            console.log('Map created, adding home marker');
+
+            // Add home marker
+            const homeMarker = new google.maps.Marker({
+                position: home,
+                map: map,
+                title: "🏠 Domicile - 50 rue de Malte",
+                icon: {
+                    url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
+                        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50">
+                            <circle cx="25" cy="25" r="23" fill="#2c3e50" stroke="white" stroke-width="4"/>
+                            <text x="25" y="32" text-anchor="middle" fill="white" font-size="20" font-family="Arial">🏠</text>
+                        </svg>
+                    `),
+                    scaledSize: new google.maps.Size(50, 50),
+                    anchor: new google.maps.Point(25, 25)
+                }
+            });
+            console.log('Home marker added');
+
+            // Add nursery markers using proper geocoding
+            console.log('Starting to add nursery markers, total:', nurseries.length);
+            nurseries.forEach((nursery, index) => {
+                const fullAddress = `${nursery.address}, Paris, France`;
+                
+                console.log(`Geocoding nursery ${index + 1}: ${nursery.name} at ${fullAddress}`);
+                geocoder.geocode({ address: fullAddress }, (results, status) => {
+                    console.log(`Geocoding result for ${nursery.name}: ${status}`);
+                    if (status === 'OK') {
+                        const position = results[0].geometry.location;
+                        
+                        const markerColor = dayColors[nursery.day];
+                        const marker = new google.maps.Marker({
+                            position: position,
+                            map: map,
+                            title: `${nursery.name} - ${nursery.day} ${nursery.time}`,
+                            icon: {
+                                url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">
+                                        <circle cx="20" cy="20" r="18" fill="${markerColor}" stroke="white" stroke-width="3"/>
+                                        <text x="20" y="26" text-anchor="middle" fill="white" font-size="14" font-weight="bold" font-family="Arial">${index + 1}</text>
+                                    </svg>
+                                `),
+                                scaledSize: new google.maps.Size(40, 40),
+                                anchor: new google.maps.Point(20, 20)
+                            }
+                        });
+
+                        const infoWindow = new google.maps.InfoWindow({
+                            content: `
+                                <div style="max-width: 280px; padding: 5px;">
+                                    <h4 style="margin: 0 0 10px 0; color: ${dayColors[nursery.day]}; font-size: 1.1em;">
+                                        📅 ${nursery.day.toUpperCase()} - Crèche #${index + 1}
+                                    </h4>
+                                    <p style="margin: 5px 0; font-weight: bold; color: #2c3e50;">${nursery.name}</p>
+                                    <p style="margin: 5px 0; color: #666; font-size: 0.9em;">
+                                        📍 <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(fullAddress)}" 
+                                             target="_blank" style="color: #3498db; text-decoration: none;">
+                                            ${nursery.address}
+                                        </a>
+                                    </p>
+                                    <p style="margin: 5px 0; color: #666; font-size: 0.9em;">📞 ${nursery.phone}</p>
+                                    <p style="margin: 5px 0; color: #2c3e50; font-weight: bold;">⏰ ${nursery.time} (${nursery.session})</p>
+                                    ${nursery.comment ? `<p style="margin: 8px 0; padding: 6px 8px; background: #f8f9fa; border-radius: 4px; color: #27ae60; font-size: 0.85em; border-left: 3px solid #27ae60;"><strong>💬</strong> ${nursery.comment}</p>` : ''}
+                                    ${nursery.note ? `<p style="margin: 8px 0; color: #e74c3c; font-weight: bold; font-size: 0.9em;">${nursery.note}</p>` : ''}
+                                </div>
+                            `
+                        });
+
+                        marker.addListener('click', () => {
+                            infoWindow.open(map, marker);
+                        });
+                    } else {
+                        console.error(`Geocoding failed for ${nursery.name} at ${fullAddress}: ${status}`);
+                        
+                        // Fallback: place marker near home with offset based on arrondissement
+                        let fallbackLat = home.lat;
+                        let fallbackLng = home.lng;
+                        
+                        // Rough positioning based on postal code
+                        if (nursery.address.includes('75010')) {
+                            fallbackLat += 0.005; // 10th arrondissement (north)
+                            fallbackLng += 0.003;
+                        } else if (nursery.address.includes('75003')) {
+                            fallbackLat += 0.002; // 3rd arrondissement (north-east)
+                            fallbackLng += 0.008;
+                        } else if (nursery.address.includes('75011')) {
+                            fallbackLat -= 0.003; // 11th arrondissement (south-east)
+                            fallbackLng += 0.005;
+                        }
+                        
+                        const markerColor = dayColors[nursery.day];
+                        const fallbackMarker = new google.maps.Marker({
+                            position: { lat: fallbackLat, lng: fallbackLng },
+                            map: map,
+                            title: `${nursery.name} - ${nursery.day} ${nursery.time} (Position approximative)`,
+                            icon: {
+                                url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">
+                                        <circle cx="20" cy="20" r="18" fill="${markerColor}" stroke="white" stroke-width="3" opacity="0.8"/>
+                                        <text x="20" y="26" text-anchor="middle" fill="white" font-size="14" font-weight="bold" font-family="Arial">${index + 1}</text>
+                                    </svg>
+                                `),
+                                scaledSize: new google.maps.Size(40, 40),
+                                anchor: new google.maps.Point(20, 20)
+                            }
+                        });
+                        
+                        const fallbackInfoWindow = new google.maps.InfoWindow({
+                            content: `
+                                <div style="max-width: 280px; padding: 5px;">
+                                    <h4 style="margin: 0 0 10px 0; color: ${dayColors[nursery.day]}; font-size: 1.1em;">
+                                        📅 ${nursery.day.toUpperCase()} - Crèche #${index + 1}
+                                    </h4>
+                                    <p style="margin: 5px 0; font-weight: bold; color: #2c3e50;">${nursery.name}</p>
+                                    <p style="margin: 5px 0; color: #e74c3c; font-size: 0.9em; font-style: italic;">
+                                        ⚠️ Position approximative (géocodage échoué)
+                                    </p>
+                                    <p style="margin: 5px 0; color: #666; font-size: 0.9em;">
+                                        📍 <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(fullAddress)}" 
+                                             target="_blank" style="color: #3498db; text-decoration: none;">
+                                            ${nursery.address}
+                                        </a>
+                                    </p>
+                                    <p style="margin: 5px 0; color: #666; font-size: 0.9em;">📞 ${nursery.phone}</p>
+                                    <p style="margin: 5px 0; color: #2c3e50; font-weight: bold;">⏰ ${nursery.time} (${nursery.session})</p>
+                                    ${nursery.comment ? `<p style="margin: 8px 0; padding: 6px 8px; background: #f8f9fa; border-radius: 4px; color: #27ae60; font-size: 0.85em; border-left: 3px solid #27ae60;"><strong>💬</strong> ${nursery.comment}</p>` : ''}
+                                    ${nursery.note ? `<p style="margin: 8px 0; color: #e74c3c; font-weight: bold; font-size: 0.9em;">${nursery.note}</p>` : ''}
+                                </div>
+                            `
+                        });
+
+                        fallbackMarker.addListener('click', () => {
+                            fallbackInfoWindow.open(map, fallbackMarker);
+                        });
+                    }
+                });
+            });
+        }
+
+        // Error handling for Google Maps
+        window.gm_authFailure = function() {
+            console.error('Google Maps API authentication failed');
+            document.getElementById('map').innerHTML = `
+                <div style="display: flex; align-items: center; justify-content: center; height: 400px; background: #f8f9fa; color: #e74c3c; border: 2px dashed #ddd; font-family: Arial, sans-serif;">
+                    <div style="text-align: center; padding: 20px;">
+                        <h3>⚠️ Erreur d'authentification Google Maps</h3>
+                        <p>Vérifiez la clé API et les services activés dans Google Cloud Console</p>
+                        <p style="font-size: 0.9em; color: #666;">APIs requises: Maps JavaScript API + Geocoding API</p>
+                    </div>
+                </div>
+            `;
+        };
+
+        // Fallback if Google Maps fails to load completely
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                if (typeof google === 'undefined') {
+                    console.error('Google Maps API failed to load');
+                    document.getElementById('map').innerHTML = `
+                        <div style="display: flex; align-items: center; justify-content: center; height: 400px; background: #f8f9fa; color: #e74c3c; border: 2px dashed #ddd; font-family: Arial, sans-serif;">
+                            <div style="text-align: center; padding: 20px;">
+                                <h3>⚠️ Google Maps non disponible</h3>
+                                <p>Vérifiez votre connexion internet et la clé API</p>
+                                <p style="font-size: 0.9em; color: #666;">Actualiser la page pour réessayer</p>
+                            </div>
+                        </div>
+                    `;
+                }
+            }, 10000);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{
+  "name": "nursery-visit-planner",
+  "version": "1.0.0",
+  "description": "Nursery visit planner for Paris",
+  "scripts": {
+    "build": "node build.js",
+    "dev": "node build.js && python3 -m http.server 8000"
+  },
+  "dependencies": {
+    "dotenv": "^16.5.0"
+  }
+}
