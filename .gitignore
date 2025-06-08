@@ -2,3 +2,7 @@
 .env
 node_modules/
 index.html
+*.csv
+Liste*
+debug_maps.html
+nursery_visit_planner_static.html
